@@ -157,6 +157,12 @@ imports keep working.
   update would be processed in id-ordered batches.
 - Input validation and error handling are out of scope, as the assignment says.
 
+## AI-assisted development
+
+Tools, configuration and the parts where AI was used are described in
+[docs/ai-assisted-development.md](docs/ai-assisted-development.md); the agent rules
+are in [CLAUDE.md](CLAUDE.md).
+
 ## Changes to the original project setup
 
 - Tests run with ts-jest and the code is type-checked (`yarn typecheck`).
