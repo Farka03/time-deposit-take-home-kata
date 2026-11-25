@@ -1,27 +1,16 @@
 import { TimeDeposit } from './TimeDeposit'
+import { InterestPolicies } from './domain/interest/InterestPolicies'
+
+const roundToCents = (amount: number): number => Math.round((amount + Number.EPSILON) * 100) / 100
 
 export class TimeDepositCalculator {
+  constructor(private readonly interestPolicies: InterestPolicies = InterestPolicies.default()) {}
+
+  /** Adds one month of interest, rounded to cents, to every deposit in place. */
   public updateBalance(xs: TimeDeposit[]) {
-    for (let i = 0; i < xs.length; i++) {
-      let a = 0
-
-      if (xs[i].days > 30) {
-        if (xs[i].planType === 'student') {
-          if (xs[i].days < 366) {
-            a += (xs[i].balance * 0.03) / 12
-          }
-        } else if (xs[i].planType === 'premium') {
-          if (xs[i].days > 45) {
-            a += (xs[i].balance * 0.05) / 12
-          }
-        } else if (xs[i].planType === 'basic') {
-          a += (xs[i].balance * 0.01) / 12
-        }
-      }
-
-      const a2d = Math.round((a + Number.EPSILON) * 100) / 100
-
-      xs[i].balance += a2d
+    for (const deposit of xs) {
+      const interest = this.interestPolicies.for(deposit.planType).monthlyInterest(deposit)
+      deposit.balance += roundToCents(interest)
     }
-  };
+  }
 }
