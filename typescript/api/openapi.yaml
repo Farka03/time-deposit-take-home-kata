@@ -1,0 +1,84 @@
+openapi: 3.0.3
+info:
+  title: XA Bank Time Deposits API
+  version: 1.0.0
+  description: |
+    Time deposits of XA Bank and the monthly interest they earn.
+
+    Interest per plan (annual rate, paid monthly): basic 1%, student 3% during the
+    first year only, premium 5% starting after 45 days. No plan earns interest in
+    the first 30 days.
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Time deposits
+paths:
+  /time-deposits:
+    get:
+      tags: [Time deposits]
+      operationId: getAllTimeDeposits
+      summary: List all time deposits with their withdrawals
+      responses:
+        '200':
+          description: All time deposits, ordered by id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeDeposit'
+  /time-deposits/balance-updates:
+    post:
+      tags: [Time deposits]
+      operationId: updateAllBalances
+      summary: Add one month of interest to the balance of every time deposit
+      description: |
+        Runs the monthly interest calculation for all time deposits in a single
+        transaction. The call is not idempotent: every call adds another month of
+        interest, so it is meant to be triggered once per month (for example by a
+        scheduler).
+      responses:
+        '204':
+          description: All balances were updated.
+components:
+  schemas:
+    TimeDeposit:
+      type: object
+      additionalProperties: false
+      required: [id, planType, balance, days, withdrawals]
+      properties:
+        id:
+          type: integer
+          example: 1
+        planType:
+          type: string
+          description: Known plans are basic, student and premium. Other plans earn no interest.
+          example: basic
+        balance:
+          type: number
+          description: Current balance, two decimal places.
+          example: 1235595.81
+        days:
+          type: integer
+          description: Age of the deposit in days.
+          example: 45
+        withdrawals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Withdrawal'
+    Withdrawal:
+      type: object
+      additionalProperties: false
+      required: [id, amount, date]
+      properties:
+        id:
+          type: integer
+          example: 1
+        amount:
+          type: number
+          description: Withdrawn amount, two decimal places.
+          example: 250.5
+        date:
+          type: string
+          format: date
+          example: '2026-10-15'
