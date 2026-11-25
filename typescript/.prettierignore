@@ -1,0 +1,5 @@
+dist/
+src/adapter/in/http/generated/
+# Kept byte for byte as they were before the refactoring.
+src/TimeDeposit.ts
+src/tests/support/LegacyTimeDepositCalculator.ts
