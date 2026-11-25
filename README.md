@@ -1,5 +1,10 @@
 # Time Deposit Refactoring Kata - Take-Home Assignment
 
+> **Solution:** implemented in TypeScript (NestJS, PostgreSQL), see
+> [typescript/README.md](typescript/README.md) for how to run it and how to
+> trigger the endpoints through Swagger. The other language folders are left as
+> provided.
+
 ## XA Bank Time Deposit
 
 ### Context
