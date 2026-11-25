@@ -1,11 +1,12 @@
 {
-    "include": [
-      "./src/*"
-    ],
-    "compilerOptions": {
-      "lib": [
-        "esnext"
-      ],
-      "esModuleInterop": true
-    }
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "lib": ["ES2022"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   }
+}
